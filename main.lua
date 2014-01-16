@@ -1,16 +1,18 @@
 local grabbed = false
 local curve = love.math.newBezierCurve()
+local dr = 0
 
 function love.load()
 
 end
 
 function love.update(dt)
-
+    dr = dt * math.pi / 16
 end
 
 function love.draw()
     love.graphics.setBackgroundColor(25, 25, 35)
+    curve:rotate(dr, love.window.getWidth() / 2, love.window.getHeight() / 2)
 
     if curve:getControlPointCount() > 1 then
         love.graphics.setColor(100, 100, 100)
@@ -34,7 +36,7 @@ function love.draw()
             love.graphics.setColor(0, 255, 0)
         end
 
-        love.graphics.circle("fill", x, y, 5, 10)
+        love.graphics.rectangle("fill", x - 7, y - 7, 15, 15)
     end
 end
 
@@ -42,7 +44,7 @@ function love.mousepressed(x, y, button)
     if button == "l" then
         for i = 1, curve:getControlPointCount() do
             local cx, cy = curve:getControlPoint(i)
-            if x < cx + 5 and x > cx - 5 and y < cy + 5 and y > cy - 5 then
+            if x < cx + 15 and x > cx - 15 and y < cy + 15 and y > cy - 15 then
                 grabbed = i
             end
         end
