@@ -13,31 +13,44 @@ function Editor:init()
 
     self.panels = {
         Panel {
-            border = {0, 1, 2, 3},
-            margin = {0, 1, 2, 3},
-            padding = {0, 1, 2, 3}
+            border = 2,
+            padding = 4,
+            margin = 4,
+--            border = {0, 1, 2, 3},
+--            margin = {0, 1, 2, 3},
+--            padding = {0, 1, 2, 3}
         },
         Panel {
-            border = {4, 5, 6, 7},
-            margin = {4, 5, 6, 7},
-            padding = {4, 5, 6, 7}
+            border = 2,
+            padding = 4,
+            margin = 4,
+--            border = {4, 5, 6, 7},
+--            margin = {4, 5, 6, 7},
+--            padding = {4, 5, 6, 7}
         },
         Panel {
-            border = {8, 9, 10, 11},
-            margin = {8, 9, 10, 11},
-            padding = {8, 9, 10, 11}
+            border = 2,
+            padding = 4,
+            margin = 4,
+--            border = {8, 9, 10, 11},
+--            margin = {8, 9, 10, 11},
+--            padding = {8, 9, 10, 11}
         },
         Panel {
-            border = {12, 13, 14, 15},
-            margin = {12, 13, 14, 15},
-            padding = {12, 13, 14, 15}
+            border = 2,
+            padding = 4,
+            margin = 4,
+--            border = {12, 13, 14, 15},
+--            margin = {12, 13, 14, 15},
+--            padding = {12, 13, 14, 15}
         }
     }
 
     self.innerLayout = VLayout {
-        border = {2, 4, 6, 8},
-        margin = {2, 4, 6, 8},
-        padding = {2, 4, 6, 8}
+        background = {0, 0, 0, 0}
+--        border = {2, 4, 6, 8},
+--        margin = {2, 4, 6, 8},
+--        padding = {2, 4, 6, 8}
     }
     self.innerLayout:add {
         self.panels[1],
@@ -45,9 +58,10 @@ function Editor:init()
     }
 
     self.outerLayout = HLayout {
-        border = {3, 5, 7, 9},
-        margin = {3, 5, 7, 9},
-        padding = {3, 5, 7, 9}
+        background = {0, 0, 0, 0}
+--        border = {3, 5, 7, 9},
+--        margin = {3, 5, 7, 9},
+--        padding = {3, 5, 7, 9}
     }
     self.outerLayout:add {
         self.innerLayout,
