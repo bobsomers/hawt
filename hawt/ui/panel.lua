@@ -52,6 +52,11 @@ function Panel:init(opts)
             self.padding = {opts.padding, opts.padding, opts.padding, opts.padding}
         end
     end
+
+    self.marginDebugColor = {math.random(50, 205), math.random(50, 205), math.random(50, 205)}
+    self.borderDebugColor = {math.random(50, 205), math.random(50, 205), math.random(50, 205)}
+    self.paddingDebugColor = {math.random(50, 205), math.random(50, 205), math.random(50, 205)}
+    self.backgroundDebugColor = {math.random(50, 205), math.random(50, 205), math.random(50, 205)}
 end
 
 function Panel:getMinWidth()
@@ -80,7 +85,11 @@ end
 function Panel:draw()
     if Ui.debug then
         -- Draw margin.
-        love.graphics.setColor(255, 0, 0)
+        love.graphics.setColor(
+            self.marginDebugColor[1],
+            self.marginDebugColor[2],
+            self.marginDebugColor[3]
+        )
         love.graphics.rectangle("fill",
             self.x - self.padding[4] - self.border[4] - self.margin[4],
             self.y - self.padding[1] - self.border[1] - self.margin[1],
@@ -91,7 +100,11 @@ function Panel:draw()
 
     -- Draw borders.
     if Ui.debug then
-        love.graphics.setColor(0, 255, 0)
+        love.graphics.setColor(
+            self.borderDebugColor[1],
+            self.borderDebugColor[2],
+            self.borderDebugColor[3]
+        )
     else
         love.graphics.setColor(
             self.borderColor[1],
@@ -139,7 +152,11 @@ function Panel:draw()
 
     if Ui.debug then
         -- Draw padding.
-        love.graphics.setColor(0, 0, 255)
+        love.graphics.setColor(
+            self.paddingDebugColor[1],
+            self.paddingDebugColor[2],
+            self.paddingDebugColor[3]
+        )
         love.graphics.rectangle("fill",
             self.x - self.padding[4],
             self.y - self.padding[1],
@@ -150,7 +167,11 @@ function Panel:draw()
 
     -- Draw content background.
     if Ui.debug then
-        love.graphics.setColor(0, 0, 0)
+        love.graphics.setColor(
+            self.backgroundDebugColor[1],
+            self.backgroundDebugColor[2],
+            self.backgroundDebugColor[3]
+        )
         love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
     else
         love.graphics.setColor(

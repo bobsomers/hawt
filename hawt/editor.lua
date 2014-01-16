@@ -1,6 +1,7 @@
 local Ui = require "hawt.ui.globals"
 local Panel = require "hawt.ui.panel"
 local HLayout = require "hawt.ui.hlayout"
+local VLayout = require "hawt.ui.vlayout"
 
 local Editor = {}
 
@@ -33,11 +34,23 @@ function Editor:init()
         }
     }
 
-    self.layout = HLayout {}
-
-    self.layout:add {
+    self.innerLayout = VLayout {
+        border = {2, 4, 6, 8},
+        margin = {2, 4, 6, 8},
+        padding = {2, 4, 6, 8}
+    }
+    self.innerLayout:add {
         self.panels[1],
-        self.panels[2],
+        self.panels[2]
+    }
+
+    self.outerLayout = HLayout {
+        border = {3, 5, 7, 9},
+        margin = {3, 5, 7, 9},
+        padding = {3, 5, 7, 9}
+    }
+    self.outerLayout:add {
+        self.innerLayout,
         self.panels[3],
         self.panels[4]
     }
@@ -51,7 +64,7 @@ function Editor:update(stockFunc, dt)
     self.t = self.t + dt
     local width = (400 * (math.sin(self.t) + 1)) + 400
     local height = (200 * (math.sin(self.t * 0.9) + 1)) + 200
-    self.layout:computeLayout(50, 50, width, height)
+    self.outerLayout:computeLayout(50, 50, width, height)
 end
 
 function Editor:draw(stockFunc)
@@ -78,7 +91,7 @@ function Editor:draw(stockFunc)
         love.graphics.setFont(self.font)
         love.graphics.print("Hawt is active...", 50, 50)
 
-        self.layout:draw()
+        self.outerLayout:draw()
     end
 end
 
