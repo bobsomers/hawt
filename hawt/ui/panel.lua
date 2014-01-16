@@ -1,15 +1,18 @@
 local Class = require "hawt.hump.class"
-local Vector = require "hawt.hump.vector"
 
 local Ui = require "hawt.ui.globals"
 
 local Panel = Class {
-    x = 300,
-    y = 300,
-    width = 200,
-    height = 200,
+    x = 0,
+    y = 0,
+    width = 0,
+    height = 0,
+    minWidth = 50,
+    minHeight = 50,
+    expanding = false,
+    background = Ui.panelBackground,
     border = {0, 0, 0, 0},
-    borderColor = {0, 0, 0, 255},
+    borderColor = Ui.panelBorderColor,
     margin = {0, 0, 0, 0},
     padding = {0, 0, 0, 0}
 }
@@ -51,6 +54,29 @@ function Panel:init(opts)
     end
 end
 
+function Panel:getMinWidth()
+    local minWidth = self.margin[4] + self.border[4] + self.padding[4] +
+                     self.margin[2] + self.border[2] + self.padding[2] +
+                     self.minWidth
+    return minWidth
+end
+
+function Panel:getMinHeight()
+    local minHeight = self.margin[1] + self.border[1] + self.padding[1] +
+                      self.margin[3] + self.border[3] + self.padding[3] +
+                      self.minHeight
+    return minHeight
+end
+
+function Panel:computeLayout(x, y, width, height)
+    self.x = x + self.margin[4] + self.border[4] + self.padding[4]
+    self.y = y + self.margin[1] + self.border[1] + self.padding[1]
+    self.width = width - self.margin[4] - self.border[4] - self.padding[4] -
+                         self.margin[2] - self.border[2] - self.padding[2]
+    self.height = height - self.margin[1] - self.border[1] - self.padding[1] -
+                           self.margin[3] - self.border[3] - self.padding[3]
+end
+
 function Panel:draw()
     if Ui.debug then
         -- Draw margin.
@@ -89,16 +115,16 @@ function Panel:draw()
             self.x + self.width + self.padding[2] + (self.border[2] / 2),
             self.y - self.padding[1] - self.border[1] + 0.5,
             self.x + self.width + self.padding[2] + (self.border[2] / 2),
-            self.y + self.width + self.padding[3] + self.border[3] - 0.5
+            self.y + self.height + self.padding[3] + self.border[3] - 0.5
         )
     end
     if self.border[3] > 0 then
         love.graphics.setLineWidth(self.border[3])
         love.graphics.line(
             self.x - self.padding[4] - self.border[4] + 0.5,
-            self.y + self.width + self.padding[3] + (self.border[3] / 2),
+            self.y + self.height + self.padding[3] + (self.border[3] / 2),
             self.x + self.width + self.padding[2] + self.border[2] - 0.5,
-            self.y + self.width + self.padding[3] + (self.border[3] / 2)
+            self.y + self.height + self.padding[3] + (self.border[3] / 2)
         )
     end
     if self.border[4] > 0 then
@@ -107,7 +133,7 @@ function Panel:draw()
             self.x - self.padding[4] - (self.border[4] / 2),
             self.y - self.padding[1] - self.border[1] + 0.5,
             self.x - self.padding[4] - (self.border[4] / 2),
-            self.y + self.width + self.padding[3] + self.border[3] - 0.5
+            self.y + self.height + self.padding[3] + self.border[3] - 0.5
         )
     end
 

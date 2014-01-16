@@ -1,5 +1,6 @@
 local Ui = require "hawt.ui.globals"
 local Panel = require "hawt.ui.panel"
+local HLayout = require "hawt.ui.hlayout"
 
 local Editor = {}
 
@@ -9,17 +10,48 @@ function Editor:init()
     self.playing = true
     self.font = love.graphics.newFont("hawt/assets/days.ttf", 24)
 
-    self.panel = Panel {
-        background = Ui.panelBackground,
-        borderColor = Ui.panelBorderColor,
-        border = {10, 20, 30, 40},
-        margin = {10, 20, 30, 40},
-        padding = {10, 20, 30, 40}
+    self.panels = {
+        Panel {
+            border = {0, 1, 2, 3},
+            margin = {0, 1, 2, 3},
+            padding = {0, 1, 2, 3}
+        },
+        Panel {
+            border = {4, 5, 6, 7},
+            margin = {4, 5, 6, 7},
+            padding = {4, 5, 6, 7}
+        },
+        Panel {
+            border = {8, 9, 10, 11},
+            margin = {8, 9, 10, 11},
+            padding = {8, 9, 10, 11}
+        },
+        Panel {
+            border = {12, 13, 14, 15},
+            margin = {12, 13, 14, 15},
+            padding = {12, 13, 14, 15}
+        }
     }
+
+    self.layout = HLayout {}
+
+    self.layout:add {
+        self.panels[1],
+        self.panels[2],
+        self.panels[3],
+        self.panels[4]
+    }
+
+    self.t = 0
 end
 
 function Editor:update(stockFunc, dt)
     if not self.active or (self.active and self.playing) then stockFunc(dt) end
+
+    self.t = self.t + dt
+    local width = (400 * (math.sin(self.t) + 1)) + 400
+    local height = (200 * (math.sin(self.t * 0.9) + 1)) + 200
+    self.layout:computeLayout(50, 50, width, height)
 end
 
 function Editor:draw(stockFunc)
@@ -46,7 +78,7 @@ function Editor:draw(stockFunc)
         love.graphics.setFont(self.font)
         love.graphics.print("Hawt is active...", 50, 50)
 
-        self.panel:draw()
+        self.layout:draw()
     end
 end
 
