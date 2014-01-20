@@ -6,7 +6,7 @@ local VLayout = require "hawt.ui.vlayout"
 local Editor = {}
 
 function Editor:init()
-    self.hotkey = "pause"
+    self.hotkey = "`"
     self.active = false
     self.playing = true
     self.font = love.graphics.newFont("hawt/assets/days.ttf", 24)

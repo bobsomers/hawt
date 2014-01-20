@@ -1,3 +1,3 @@
 #!/bin/sh
-#/Applications/love.app/Contents/MacOS/love .
-love .
+/Applications/love.app/Contents/MacOS/love .
+#love .
