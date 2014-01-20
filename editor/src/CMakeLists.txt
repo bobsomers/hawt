@@ -10,4 +10,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     list(APPEND CMAKE_PREFIX_PATH "/usr/local/Cellar/qt5/5.2.0/lib/cmake")
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
+# Enable C++11.
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++11)
+
+add_subdirectory(enet)
 add_subdirectory(helloworld)
