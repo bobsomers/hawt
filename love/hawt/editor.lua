@@ -3,6 +3,8 @@ local Panel = require "hawt.ui.panel"
 local HLayout = require "hawt.ui.hlayout"
 local VLayout = require "hawt.ui.vlayout"
 
+local enet = require "enet"
+
 local Editor = {}
 
 function Editor:init()
@@ -10,6 +12,9 @@ function Editor:init()
     self.active = false
     self.playing = true
     self.font = love.graphics.newFont("hawt/assets/days.ttf", 24)
+
+    self.connected = false
+    self.host = enet.host_create("localhost:21981")
 
     self.panels = {
         Panel {
@@ -73,6 +78,19 @@ function Editor:init()
 end
 
 function Editor:update(stockFunc, dt)
+    local netEvent = self.host:service(0)
+    if netEvent then
+        if netEvent.type == "connect" then
+            self.connected = true
+            print("Connect: ", event.peer)
+        elseif netEvent.type == "receive" then
+            print("Received: ", event.data, event.peer)
+            event.peer:send(event.data)
+        else
+            print("Got event: ", event.type)
+        end
+    end
+
     if not self.active or (self.active and self.playing) then stockFunc(dt) end
 
     self.t = self.t + dt
@@ -103,7 +121,11 @@ function Editor:draw(stockFunc)
             Ui.panelColor[4]
         )
         love.graphics.setFont(self.font)
-        love.graphics.print("Hawt is active...", 50, 50)
+        local statusText = "Waiting for connection..."
+        if self.connected then
+            statusText = "External editor connected."
+        end
+        love.graphics.print(statusText, 50, wh - 50)
 
         self.outerLayout:draw()
     end
