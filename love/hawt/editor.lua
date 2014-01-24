@@ -82,12 +82,12 @@ function Editor:update(stockFunc, dt)
     if netEvent then
         if netEvent.type == "connect" then
             self.connected = true
-            print("Connect: ", event.peer)
+            print("Connect: ", netEvent.peer)
         elseif netEvent.type == "receive" then
-            print("Received: ", event.data, event.peer)
-            event.peer:send(event.data)
+            print("Received: ", netEvent.data, netEvent.peer)
+            netEvent.peer:send(netEvent.data)
         else
-            print("Got event: ", event.type)
+            print("Got event: ", netEvent.type)
         end
     end
 

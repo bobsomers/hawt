@@ -5,6 +5,7 @@
 #include <enet/enet.h>
 
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -37,6 +38,13 @@ class EnetThread : public QThread {
             switch (event.type) {
             case ENET_EVENT_TYPE_CONNECT:
                 emit connected();
+                {
+                    ENetPacket* packet = enet_packet_create(
+                        "Hello game, from editor!",
+                        std::strlen("Hello game, from editor!") + 1,
+                        ENET_PACKET_FLAG_RELIABLE);
+                    enet_peer_send(event.peer, 0, packet);
+                }
                 break;
 
             case ENET_EVENT_TYPE_RECEIVE:
@@ -67,15 +75,16 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPushButton button("Hello, world!");
 
-    EnetThread* enetThread = new EnetThread;
-    QObject::connect(enetThread, &EnetThread::connected, []() {
+    EnetThread enetThread;
+    QObject::connect(&enetThread, &EnetThread::connected, []() {
         std::cout << "Connected to game server." << std::endl;
     });
-    QObject::connect(enetThread, &EnetThread::received, [](const std::string& message) {
+    QObject::connect(&enetThread, &EnetThread::received, [](const std::string& message) {
         std::cout << "Received message: " << message << std::endl;
     });
 
     button.show();
+    enetThread.start();
 
     return app.exec();
 }
